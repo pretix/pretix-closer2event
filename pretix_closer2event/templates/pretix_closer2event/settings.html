@@ -2,23 +2,23 @@
 {% load i18n %}
 {% load bootstrap3 %}
 {% block inside %}
-    <h1>{% trans "Stay22 settings" %}</h1>
+    <h1>{% trans "closer2event settings" %}</h1>
     <div class="alert alert-info">
         <strong>
             {% blocktrans trimmed %}
-                Our Stay22 integration works out of the box. You don't need to do anything!
+                Our closer2event integration works out of the box. You don't need to do anything!
             {% endblocktrans %}
         </strong>
         {% blocktrans trimmed %}
-            However, if you are a Stay22 partner yourself and want to customize things further, you can enter your own
+            However, if you are a closer2event partner yourself and want to customize things further, you can enter your own
             affiliate ID or even a full embed link here.
         {% endblocktrans %}
     </div>
     <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form_errors form %}
-        {% bootstrap_field form.stay22_aid layout="horizontal" %}
-        {% bootstrap_field form.stay22_embedlink layout="horizontal" %}
+        {% bootstrap_field form.closer2event_event layout="horizontal" %}
+        {% bootstrap_field form.closer2event_embedlink layout="horizontal" %}
         <div class="form-group submit-group">
             <button type="submit" class="btn btn-primary btn-save">
                 {% trans "Save" %}

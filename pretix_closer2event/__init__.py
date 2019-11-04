@@ -6,13 +6,13 @@ except ImportError:
 
 
 class PluginApp(PluginConfig):
-    name = 'pretix_stay22'
-    verbose_name = 'Stay22 Hotel map'
+    name = 'pretix_closer2event'
+    verbose_name = 'closer2event Hotel map'
 
     class PretixPluginMeta:
-        name = ugettext_lazy('Stay22 Hotel map')
-        author = 'Raphael Michel'
-        description = ugettext_lazy('This plugin allows to integrate the Stay22 hotel map into your pretix shop')
+        name = ugettext_lazy('closer2event Hotel map')
+        author = 'Martin Gross'
+        description = ugettext_lazy('This plugin allows to integrate the closer2event hotel map into your pretix shop')
         visible = True
         version = '1.0.0'
         compatibility = "pretix>=3.2.999"
@@ -21,4 +21,4 @@ class PluginApp(PluginConfig):
         from . import signals  # NOQA
 
 
-default_app_config = 'pretix_stay22.PluginApp'
+default_app_config = 'pretix_closer2event.PluginApp'

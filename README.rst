@@ -1,5 +1,5 @@
-Stay22 Hotel map
-================
+closer2event Hotel map
+======================
 
 This is a plugin for `pretix`_. 
 
@@ -8,7 +8,7 @@ Development setup
 
 1. Make sure that you have a working `pretix development setup`_.
 
-2. Clone this repository, eg to ``local/pretix-stay22``.
+2. Clone this repository, eg to ``local/pretix-closer2event``.
 
 3. Activate the virtual environment you use for pretix development.
 

@@ -1,5 +1,5 @@
 all: localecompile
-LNGS:=`find pretix_stay22/locale/ -mindepth 1 -maxdepth 1 -type d -printf "-l %f "`
+LNGS:=`find pretix_closer2event/locale/ -mindepth 1 -maxdepth 1 -type d -printf "-l %f "`
 
 localecompile:
 	django-admin compilemessages

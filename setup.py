@@ -24,13 +24,13 @@ cmdclass = {
 
 
 setup(
-    name='pretix-stay22',
+    name='pretix-closer2event',
     version='1.0.0',
-    description='This plugin allows to integrate the Stay22 hotel map into your pretix shop',
+    description='This plugin allows to integrate the closer2event hotel map into your pretix shop',
     long_description=long_description,
-    url='https://github.com/pretix/pretix-stay22',
-    author='Raphael Michel',
-    author_email='michel@rami.io',
+    url='https://github.com/pretix/pretix-closer2event',
+    author='Martin Gross',
+    author_email='gross@rami.io',
     license='Apache Software License',
 
     install_requires=[],
@@ -39,6 +39,6 @@ setup(
     cmdclass=cmdclass,
     entry_points="""
 [pretix.plugin]
-pretix_stay22=pretix_stay22:PretixPluginMeta
+pretix_closer2event=pretix_closer2event:PretixPluginMeta
 """,
 )

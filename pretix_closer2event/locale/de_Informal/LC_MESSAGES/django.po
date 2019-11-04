@@ -1,0 +1,56 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-10-21 18:36+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Raphael Michel\n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: pretix_closer2event/__init__.py:13
+msgid "closer2event Hotel map"
+msgstr ""
+
+#: pretix_closer2event/__init__.py:15
+msgid ""
+"This plugin allows to integrate the closer2event hotel map into your pretix shop"
+msgstr ""
+
+#: pretix_closer2event/signals.py:92
+msgid "closer2event"
+msgstr ""
+
+#: pretix_closer2event/templates/pretix_closer2event/order_info.html:6
+msgid "Book a hotel"
+msgstr ""
+
+#: pretix_closer2event/templates/pretix_closer2event/settings.html:5
+msgid "closer2event settings"
+msgstr ""
+
+#: pretix_closer2event/templates/pretix_closer2event/settings.html:8
+msgid ""
+"Our closer2event integration works out of the box. You don't need to do anything!"
+msgstr ""
+
+#: pretix_closer2event/templates/pretix_closer2event/settings.html:12
+msgid ""
+"However, if you are a closer2event partner yourself and want to customize things "
+"further, you can enter your own affiliate ID or even a full embed link here."
+msgstr ""
+
+#: pretix_closer2event/templates/pretix_closer2event/settings.html:24
+msgid "Save"
+msgstr ""
+
+#: pretix_closer2event/views.py:21
+msgid "closer2event AID"
+msgstr ""
+
+#: pretix_closer2event/views.py:26
+msgid "closer2event Embed Link"
+msgstr ""
