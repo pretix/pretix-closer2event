@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext_lazy
+
 try:
     from pretix.base.plugins import PluginConfig
 except ImportError:

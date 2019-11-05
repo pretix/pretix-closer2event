@@ -1,6 +1,6 @@
 from django import forms
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _  # NoQA
 from pretix.base.forms import SettingsForm
 from pretix.base.models import Event
 from pretix.control.views.event import (
@@ -8,7 +8,7 @@ from pretix.control.views.event import (
 )
 
 
-class closer2eventSettingsForm(SettingsForm):
+class Closer2eventSettingsForm(SettingsForm):
     closer2event_event = forms.CharField(
         label=_("closer2event event ID"),
         required=False,
@@ -21,9 +21,9 @@ class closer2eventSettingsForm(SettingsForm):
     )
 
 
-class closer2eventSettings(EventSettingsViewMixin, EventSettingsFormView):
+class Closer2eventSettings(EventSettingsViewMixin, EventSettingsFormView):
     model = Event
-    form_class = closer2eventSettingsForm
+    form_class = Closer2eventSettingsForm
     template_name = 'pretix_closer2event/settings.html'
     permission = 'can_change_settings'
 

@@ -1,30 +1,37 @@
 from datetime import timedelta
-from urllib.parse import urlparse, urlencode
+from urllib.parse import quote, urlencode, urlparse
 
+import requests
 from django.conf import settings
 from django.contrib.staticfiles import finders
+from django.core.cache import cache
+from django.core.exceptions import ObjectDoesNotExist
 from django.dispatch import receiver
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import get_template
 from django.urls import resolve, reverse
-from django.utils.translation import gettext_lazy as _
-
-from pretix.base.middleware import _parse_csp, _merge_csp, _render_csp
-from pretix.base.models import Order, Event
+from django.utils.translation import gettext_lazy as _  # NoQA
+from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
+from pretix.base.models import Event, Order
+from pretix.base.settings import GlobalSettingsObject
 from pretix.control.signals import nav_event_settings
 from pretix.presale.signals import order_info, process_response, sass_postamble
 
 
 def closer2event_params(event, ev, ev_last, order):
+    gs = GlobalSettingsObject()
+
     p = {
         'event': event.settings.closer2event_event or 'pretix',
         'param_1': urlparse(settings.SITE_URL).hostname,
         'param_2': event.organizer.slug,
         'param_3': event.slug,
         'lang': order.locale[:2],
-        # Event colors?
-        # Event start date for popup?
-        # Event end date for popup?
+        'header_bg': event.settings.primary_color[1:],
+        'header_color': 'FFFFFF',
+        'button_bg': 'FFFFFF',
+        'event_inidate': event.date_from.strftime('%Y-%m-%d') or 'null',
+        'event_enddate': event.date_to.strftime('%Y-%m-%d') or 'null',
     }
 
     if ev.geo_lat and ev.geo_lon:
@@ -32,9 +39,41 @@ def closer2event_params(event, ev, ev_last, order):
         p['center.lng'] = str(ev.geo_lon)
         p['markers.0.lat'] = str(ev.geo_lat)
         p['markers.0.lng'] = str(ev.geo_lon)
+    elif gs.settings.opencagedata_apikey and event.location:
+        cd = cache.get('geocode:{}'.format(quote(str(event.location))))
+        if cd:
+            p['center.lat'] = str(cd['lat'])
+            p['center.lng'] = str(cd['lng'])
+            p['markers.0.lat'] = str(cd['lat'])
+            p['markers.0.lng'] = str(cd['lng'])
+        else:
+            try:
+                r = requests.get(
+                    'https://api.opencagedata.com/geocode/v1/json?q={}&key={}'.format(
+                        quote(str(event.location)), gs.settings.opencagedata_apikey
+                    )
+                )
+                r.raise_for_status()
+            except IOError:
+                raise IOError
+            else:
+                d = r.json()
+                if len(r['results']) > 0:
+                    res = {
+                        'lat': d['results'][0]['geometry']['lat'],
+                        'lng': d['results'][0]['geometry']['lng']
+                    }
+
+                    p['center.lat'] = str(res['lat'])
+                    p['center.lng'] = str(res['lng'])
+                    p['markers.0.lat'] = str(res['lat'])
+                    p['markers.0.lng'] = str(res['lng'])
+
+                    cache.set('geocode:{}'.format(quote(str(event.location))), res, timeout=3600 * 6)
+                else:
+                    raise ObjectDoesNotExist('Could not geocode location.')
     else:
-        pass
-        # ToDo: Use a geocoding-service?
+        raise ObjectDoesNotExist('Got no lat/lng and no location and/or OpenCage API-key.')
 
     df = ev.date_from.astimezone(event.timezone)
     p['check_in'] = (df - timedelta(days=1)).date().isoformat() if df.hour < 12 else df.date().isoformat()
@@ -52,14 +91,17 @@ def order_info(sender: Event, order: Order, **kwargs):
             'url': sender.settings.closer2event_embedlink
         }
     else:
-        ctx = {
-            'url': 'https://map.closer2event.com/?{}'.format(urlencode(closer2event_params(
-                sender,
-                min(subevents, key=lambda s: s.date_from) if sender.has_subevents else sender,
-                max(subevents, key=lambda s: s.date_to or s.date_from) if sender.has_subevents else sender,
-                order
-            )))
-        }
+        try:
+            ctx = {
+                'url': 'https://map.closer2event.com/?{}'.format(urlencode(closer2event_params(
+                    sender,
+                    min(subevents, key=lambda s: s.date_from) if sender.has_subevents else sender,
+                    max(subevents, key=lambda s: s.date_to or s.date_from) if sender.has_subevents else sender,
+                    order
+                )))
+            }
+        except (IOError, ObjectDoesNotExist):
+            return
 
     template = get_template('pretix_closer2event/order_info.html')
     return template.render(ctx)
