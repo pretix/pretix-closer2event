@@ -1,10 +1,8 @@
 from datetime import timedelta
-from urllib.parse import quote, urlencode, urlparse
+from urllib.parse import urlencode, urlparse
 
-import requests
 from django.conf import settings
 from django.contrib.staticfiles import finders
-from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.dispatch import receiver
 from django.http import HttpRequest, HttpResponse
@@ -39,39 +37,6 @@ def closer2event_params(event, ev, ev_last, order):
         p['center.lng'] = str(ev.geo_lon)
         p['markers.0.lat'] = str(ev.geo_lat)
         p['markers.0.lng'] = str(ev.geo_lon)
-    elif gs.settings.opencagedata_apikey and event.location:
-        cd = cache.get('geocode:{}'.format(quote(str(event.location))))
-        if cd:
-            p['center.lat'] = str(cd['lat'])
-            p['center.lng'] = str(cd['lng'])
-            p['markers.0.lat'] = str(cd['lat'])
-            p['markers.0.lng'] = str(cd['lng'])
-        else:
-            try:
-                r = requests.get(
-                    'https://api.opencagedata.com/geocode/v1/json?q={}&key={}'.format(
-                        quote(str(event.location)), gs.settings.opencagedata_apikey
-                    )
-                )
-                r.raise_for_status()
-            except IOError:
-                raise IOError
-            else:
-                d = r.json()
-                if len(r['results']) > 0:
-                    res = {
-                        'lat': d['results'][0]['geometry']['lat'],
-                        'lng': d['results'][0]['geometry']['lng']
-                    }
-
-                    p['center.lat'] = str(res['lat'])
-                    p['center.lng'] = str(res['lng'])
-                    p['markers.0.lat'] = str(res['lat'])
-                    p['markers.0.lng'] = str(res['lng'])
-
-                    cache.set('geocode:{}'.format(quote(str(event.location))), res, timeout=3600 * 6)
-                else:
-                    raise ObjectDoesNotExist('Could not geocode location.')
     else:
         raise ObjectDoesNotExist('Got no lat/lng and no location and/or OpenCage API-key.')
 
