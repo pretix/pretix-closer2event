@@ -25,7 +25,7 @@ cmdclass = {
 
 setup(
     name='pretix-closer2event',
-    version='1.0.0',
+    version='1.0.1',
     description='This plugin allows to integrate the closer2event hotel map into your pretix shop',
     long_description=long_description,
     url='https://github.com/pretix/pretix-closer2event',

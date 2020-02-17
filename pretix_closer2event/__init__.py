@@ -16,7 +16,7 @@ class PluginApp(PluginConfig):
         description = ugettext_lazy('This plugin allows to integrate the closer2event hotel map into your pretix shop')
         visible = True
         category = 'INTEGRATION'
-        version = '1.0.0'
+        version = '1.0.1'
         compatibility = "pretix>=3.2.999"
 
     def ready(self):
