@@ -1,6 +1,6 @@
 from django import forms
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _  # NoQA
+from django.utils.translation import gettext_lazy as _  # NoQA
 from pretix.base.forms import SettingsForm
 from pretix.base.models import Event
 from pretix.control.views.event import (

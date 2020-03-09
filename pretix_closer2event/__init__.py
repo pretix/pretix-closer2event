@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 try:
     from pretix.base.plugins import PluginConfig
@@ -11,9 +11,9 @@ class PluginApp(PluginConfig):
     verbose_name = 'closer2event Hotel map'
 
     class PretixPluginMeta:
-        name = ugettext_lazy('closer2event Hotel map')
+        name = gettext_lazy('closer2event Hotel map')
         author = 'Martin Gross'
-        description = ugettext_lazy('This plugin allows to integrate the closer2event hotel map into your pretix shop')
+        description = gettext_lazy('This plugin allows to integrate the closer2event hotel map into your pretix shop')
         visible = True
         category = 'INTEGRATION'
         version = '1.0.1'
