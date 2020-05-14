@@ -60,8 +60,8 @@ def order_info(sender: Event, order: Order, **kwargs):
             ctx = {
                 'url': 'https://map.closer2event.com/?{}'.format(urlencode(closer2event_params(
                     sender,
-                    min(subevents, key=lambda s: s.date_from) if sender.has_subevents else sender,
-                    max(subevents, key=lambda s: s.date_to or s.date_from) if sender.has_subevents else sender,
+                    min(subevents, key=lambda s: s.date_from) if sender.has_subevents and subevents else sender,
+                    max(subevents, key=lambda s: s.date_to or s.date_from) if sender.has_subevents and subevents else sender,
                     order
                 )))
             }
