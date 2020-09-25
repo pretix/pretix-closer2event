@@ -29,7 +29,7 @@ def closer2event_params(event, ev, ev_last, order):
         'header_color': 'FFFFFF',
         'button_bg': 'FFFFFF',
         'event_inidate': event.date_from.strftime('%Y-%m-%d') or 'null',
-        'event_enddate': event.date_to.strftime('%Y-%m-%d') if ev.date_to else None or 'null',
+        'event_enddate': event.date_to.strftime('%Y-%m-%d') if event.date_to else None or 'null',
     }
 
     if ev.geo_lat and ev.geo_lon:
@@ -61,7 +61,7 @@ def order_info(sender: Event, order: Order, **kwargs):
                 'url': 'https://map.closer2event.com/?{}'.format(urlencode(closer2event_params(
                     sender,
                     min(subevents, key=lambda s: s.date_from) if sender.has_subevents and subevents else sender,
-                    max(subevents, key=lambda s: s.date_to or s.date_from) if sender.has_subevents and subevents else sender,
+                    max(subevents, key=lambda s: s.date_to if s.date_to else None or s.date_from) if sender.has_subevents and subevents else sender,
                     order
                 )))
             }
