@@ -29,7 +29,7 @@ def closer2event_params(event, ev, ev_last, order):
         'header_color': 'FFFFFF',
         'button_bg': 'FFFFFF',
         'event_inidate': event.date_from.strftime('%Y-%m-%d') or 'null',
-        'event_enddate': event.date_to.strftime('%Y-%m-%d') or 'null',
+        'event_enddate': event.date_to.strftime('%Y-%m-%d') if ev.date_to else None or 'null',
     }
 
     if ev.geo_lat and ev.geo_lon:
