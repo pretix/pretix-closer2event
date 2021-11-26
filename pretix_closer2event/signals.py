@@ -68,6 +68,8 @@ def order_info(sender: Event, order: Order, **kwargs):
         except (IOError, ObjectDoesNotExist):
             return
 
+    ctx['click_to_load'] = sender.settings.get("cookie_consent")
+    ctx['privacy_url'] = sender.settings.get("privacy_url")
     template = get_template('pretix_closer2event/order_info.html')
     return template.render(ctx)
 
