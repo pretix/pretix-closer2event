@@ -13,10 +13,12 @@
             <div class="overlay-content">
                 <p class="text-center"><a href="{{ url }}" class="btn btn-primary overlay-remove" data-click-to-load="closer2event-widget">{% trans "Book a hotel" %}</a></p>
                 <p class="text-muted text-center">
-                    {% trans "This service uses 3rd-party content. By clicking the button above you agree to sharing some personal information." %}
-                    {% if privacy_url %}
+                    {% trans "This service uses 3rd-party content provided by closer2event. By clicking the button above you agree to sharing some personal information." %}
                     <br>
+                    {% if privacy_url %}
                     <a href="{{ privacy_url }}">{% trans "For further info see our privacy statement." %}</a>
+                    {% else %}
+                    <a href="https://closer2event.com/privacy-policy">{% trans "For further info see closer2event’s privacy policy." %}</a>
                     {% endif %}
                 </p>
             </div>
