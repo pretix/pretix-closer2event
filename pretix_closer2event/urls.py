@@ -1,8 +1,8 @@
-from django.conf.urls import url
+from django.urls import path
 
 from .views import Closer2eventSettings
 
 urlpatterns = [
-    url(r'^control/event/(?P<organizer>[^/]+)/(?P<event>[^/]+)/closer2event/settings$',
-        Closer2eventSettings.as_view(), name='settings'),
+    path('control/event/<str:organizer>/<str:event>/closer2event/settings',
+         Closer2eventSettings.as_view(), name='settings'),
 ]
