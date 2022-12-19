@@ -9,6 +9,7 @@ except ImportError:
 
 class PluginApp(PluginConfig):
     default = True
+    default = True
     name = 'pretix_closer2event'
     verbose_name = 'closer2event Hotel map'
 
