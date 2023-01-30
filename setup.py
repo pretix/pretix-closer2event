@@ -3,6 +3,7 @@ from distutils.command.build import build
 
 from django.core import management
 from setuptools import setup, find_packages
+from pretix_closer2event import __version__
 
 
 try:
@@ -25,7 +26,7 @@ cmdclass = {
 
 setup(
     name='pretix-closer2event',
-    version='1.1.0',
+    version=__version__,
     description='This plugin allows to integrate the closer2event hotel map into your pretix shop',
     long_description=long_description,
     url='https://github.com/pretix/pretix-closer2event',
