@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _  # NoQA
 from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
 from pretix.base.models import Event, Order
 from pretix.control.signals import nav_event_settings
-from pretix.presale.signals import order_info, process_response, sass_postamble
+from pretix.presale.signals import order_info, process_response, html_head
 from urllib.parse import urlencode, urlparse
 
 
@@ -120,12 +120,10 @@ def signal_process_response(
     return response
 
 
-@receiver(sass_postamble, dispatch_uid="closer2event_sass_postamble")
-def r_sass_postamble(sender, filename, **kwargs):
-    if filename == "main.scss":
-        with open(finders.find("pretix_closer2event/postamble.scss"), "r") as fp:
-            return fp.read()
-    return ""
+@receiver(html_head, dispatch_uid="closer2event_html_head")
+def html_head_presale(sender, request=None, **kwargs):
+    template = get_template("pretix_closer2event/presale_css.html")
+    return template.render({"event": sender})
 
 
 @receiver(nav_event_settings, dispatch_uid="closer2event_nav")
