@@ -107,6 +107,9 @@ def signal_process_response(
         h = _parse_csp(response["Content-Security-Policy"])
     else:
         h = {}
+    if getattr(request, 'pci_dss_payment_page', False):
+        # No tracking scripts on PCI DSS relevant payment pages
+        return response
 
     _merge_csp(
         h,
