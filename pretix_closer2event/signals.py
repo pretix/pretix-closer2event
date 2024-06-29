@@ -122,6 +122,9 @@ def signal_process_response(
 
 @receiver(html_head, dispatch_uid="closer2event_html_head")
 def html_head_presale(sender, request=None, **kwargs):
+    if getattr(request, 'pci_dss_payment_page', False):
+        # No tracking scripts on PCI DSS relevant payment pages
+        return ""
     template = get_template("pretix_closer2event/presale_css.html")
     return template.render({"event": sender})
 
