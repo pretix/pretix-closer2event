@@ -103,13 +103,14 @@ def order_info(sender: Event, order: Order, **kwargs):
 def signal_process_response(
     sender, request: HttpRequest, response: HttpResponse, **kwargs
 ):
+    if getattr(request, 'pci_dss_payment_page', False):
+        # No tracking scripts on PCI DSS relevant payment pages
+        return response
+
     if "Content-Security-Policy" in response:
         h = _parse_csp(response["Content-Security-Policy"])
     else:
         h = {}
-    if getattr(request, 'pci_dss_payment_page', False):
-        # No tracking scripts on PCI DSS relevant payment pages
-        return response
 
     _merge_csp(
         h,
